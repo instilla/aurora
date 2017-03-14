@@ -1,0 +1,41 @@
+{
+	"manifest_version": 2,
+	"name": "Aurora",
+	"version": "0.1",
+	"icons" : {
+		"16" : "img/icon16.png",
+		"48" :  "img/icon48.png",
+		"128": "img/icon128.png"
+	},
+	"browser_action": {
+  		"default_icon": "img/icon16.png"
+	},
+	"content_scripts": [
+	{
+		"matches": [
+			"https://trello.com/b/TrCSPljX/pm-aurora*",
+			"http://trello.com/b/TrCSPljX/pm-aurora*"
+		],
+		"js": ["/filter/filterSetup.js"]
+
+	}
+	],	
+	"background": {
+  		"page": "background.html",
+  		"persistent" : false
+	},
+
+	 "web_accessible_resources": [
+	 	"/filter/filterScript.js",
+	 	"/setting/index.html*"
+	 ],
+
+	"permissions" : [
+	 	"tabs",
+	 	"https://trello.com/*",
+	 	"https://api.trello.com/*",
+	 	"http://trello.com/*",
+	 	"http://api.trello.com/*"
+	 ]
+
+}

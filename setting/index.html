@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aurora Settings</title>
+</head>
+<body>
+
+     <h1>Aurora Settings</h1>
+
+
+    <div id="aurora_loggedout" style="display: none">
+        <p>To get going, you'll need to authorize the extension to use your Trello account.</p>
+
+        <p>Do it by clicking the big Authorize button below.</p>
+
+        <a href="#" id="aurora_login">Authorize</a><br/>
+    </div>
+    <div id="aurora_loggedin" style="display: none">
+        <p>You are already authorized. If something doesn't work, try logging out using the button below, and logging back in.</p>
+
+        <a href="#"  id="aurora_logout">Log out</a><br/>
+    </div>
+
+    <script src="../key.js"></script>
+    <script src="../lib/jquery-1.7.1.min.js"></script>
+    <script src="../lib/trello_client.js"></script>
+    <script src="../lib/hashSearch.js"></script>
+    <script src="js/setting.js"></script>
+</body>
+</html>
