@@ -1,21 +1,32 @@
 // content.js to setup filterUI and injext the filtering logic into html.
 
-console.log("Aurora is On");
+
 
 // retrieve list data from backgrounbd and update DOM
 
 chrome.runtime.sendMessage( 
 	{command:'giveMeLabels'},
 	function(response) {
-		createFilterUI(response);
-		injectJS("/filter/filterScript.js");
-	} 
+		
+		// setup memberAvatars
+		let avatarArray = [];
+	
+		chrome.storage.local.get('memberAvatars', function(data){
+			if (Object.keys(data)==0) {
+				avatarArray = extractMembers();
+			} else {
+				avatarArray = data.memberAvatars
+			};
+
+			createFilterUI(response,avatarArray);
+			injectJS("/filter/filterScript.js");
+		});
+	}
 );
 
+function createFilterUI(labelList,avatarArray){
 
-
-
-function createFilterUI(labelList){
+	// console.log(avatarArray);
 
 	//create and position the div
 
@@ -28,14 +39,14 @@ function createFilterUI(labelList){
 	
 
 
-	//create the select
+	//create select 
 
 	let selectUI = document.createElement("SELECT");
 	selectUI.id = "aurora-filter";
 	let option;
 	option = document.createElement("OPTION");
-	option.value= "tutti";
-	option.innerText="tutti";
+	option.value= "All projects";
+	option.innerText="All projects";
 	selectUI.appendChild(option);
 	for (iii in labelList.answer) {
 
@@ -47,9 +58,40 @@ function createFilterUI(labelList){
 			
 		}
 	}
+	let styleDiv = document.createElement("DIV");
+	styleDiv.style.display = "inline-block";
+	styleDiv.style.position = "absolute";
+	styleDiv.style.width = "150px";
 
-	filterDiv.appendChild(selectUI);
+	filterDiv.appendChild(styleDiv);
 
+	selectUI.style.width = "150px";
+	styleDiv.appendChild(selectUI);
+
+	//create the avatar
+
+	let avatarDiv = document.createElement("DIV");
+	let string = "";
+	for (let img of avatarArray) {
+		string += img;
+	}
+	avatarDiv.innerHTML = string;
+
+	for (let avatarImg of avatarDiv.childNodes) {
+		avatarImg.style.marginRight = "3px";
+		avatarImg.style.borderBottom = "2px solid #0067a3"
+		string = avatarImg.title;
+		string = string.split("(");
+		string = string[1].replace(")","");
+		string = "@" + string;
+		avatarImg.id = string;
+		avatarImg.className = "aurora-avatar"
+	}
+	avatarDiv.style.display = "inline-block";
+	avatarDiv.style.marginLeft ="160px";
+
+
+	filterDiv.appendChild(avatarDiv);
 
 }
 
@@ -76,3 +118,30 @@ function injectCSS(path) {
 	document.head.appendChild( stylesheet );
 
 }
+
+
+
+function extractMembers(){
+
+	let nodeList;
+	let memberArray = [];
+	
+	document.querySelector("a.js-show-sidebar").click();
+	nodeList = document.querySelectorAll("img.member-avatar");
+	for ( let node of nodeList) memberArray.push(node.outerHTML);
+	memberArray = [... new Set(memberArray)];
+	chrome.runtime.sendMessage(
+		{
+			command : "saveMembers", 
+			array : memberArray
+		}, function () {
+			//update members
+		}
+	);
+	return memberArray;
+
+
+}
+
+
+console.log("Aurora is On");

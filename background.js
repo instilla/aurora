@@ -1,13 +1,5 @@
 // background.js
 
-
-// icon on  click, setting page
-chrome.browserAction.onClicked.addListener(function() {
-
-   	chrome.tabs.create( { url : "/setting/index.html"});
-});
-
-
 // if not authenticaded -> open tabs
 
 if (!localStorage.getItem('trello_token')) {
@@ -42,6 +34,14 @@ chrome.runtime.onMessage.addListener(function(request,sender, sendResponse) {
     	return true;
     }
 
+    // on update message update json
+
+    if (request.command == 'saveMembers') {
+        console.log("save attivo");
+        console.log(request.array);
+        chrome.storage.local.set({'memberAvatars' : request.array});
+    }
+
 });
 
 
@@ -53,3 +53,6 @@ function trelloInit() {
 
 
 // Trello.get('/boards/TrCSPljX/labels', console.log("success"), console.log("error"))
+
+
+// chrome.storage.local.get('memberAvatars', function(data){console.log(data)});
