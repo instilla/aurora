@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function(request,sender, sendResponse) {
 
     if (request.command == 'giveMeLabels'){
     	trelloInit();
-    	Trello.get('/boards/TrCSPljX/labels', 
+    	Trello.get('/boards/'+trelloBoard+'/labels', 
     		function(data){
     			sendResponse({answer: data});
     		},function(){
@@ -36,11 +36,11 @@ chrome.runtime.onMessage.addListener(function(request,sender, sendResponse) {
 
     // on update message update json
 
-    if (request.command == 'saveMembers') {
-        console.log("save attivo");
-        console.log(request.array);
-        chrome.storage.local.set({'memberAvatars' : request.array});
-    }
+    // if (request.command == 'saveMembers') {
+    //     console.log("save attivo");
+    //     console.log(request.array);
+    //     chrome.storage.local.set({'memberAvatars' : request.array});
+    // }
 
 });
 

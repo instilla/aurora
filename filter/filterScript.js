@@ -1,14 +1,32 @@
-
+//filterScript is divided in three parts: setup/change-URL logic, listeners logic - and mask logic
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
 
-// select-filter initial value
+// refresh-Logic
 
-refreshHighlight();
+putOnMask();
+
+function hrefHandler(){
+    this.oldHref = window.location.href;
+    this.Check;
+
+    var that = this;
+    var detect = function(){
+        if(that.oldHref!=window.location.href){
+            putOnMask();
+            that.oldHref = window.location.href;
+        }
+    };
+    this.Check = setInterval(function(){ detect() }, 100);
+}
+
+let hrefDetection = new hrefHandler();
 
 
-//filter listner-change URL
+//listener logic
+
+// select
 
 document.onload = selectFilter.addEventListener('change',(event)=>{
 	let search = "";
@@ -37,12 +55,13 @@ document.onload = selectFilter.addEventListener('change',(event)=>{
 
 });
 
+// avatar
+
 for (let img of memberAvatars) {
 	 img.addEventListener('click',(event) => {clickAvatar(event)});
 }
 
 
-// change url on clickAvatar
 function clickAvatar(event) {
 	let string ="";
 	let parameters = getParameterByName("filter");
@@ -61,7 +80,40 @@ function clickAvatar(event) {
 		}
 
 	 window.location.href = window.location.href.split("?")[0] + string;
-	 // console.log(string);
+}
+
+
+
+// mask logic
+
+function putOnMask(){
+
+	let filterParameters = getParameterByName("filter");
+
+	if (filterParameters == null) {
+		selectFilter.value = "All projects";
+		for (let img of memberAvatars) {
+			img.style.borderBottom = "2px solid #0067a3";
+		}
+
+
+	} else {
+
+		if(filterParameters.indexOf("label") !== -1) {
+			let string = filterParameters.indexOf(",") !== -1 ? filterParameters.split(",")[0] : filterParameters;
+			selectFilter.value = string.replace("label:","");
+		}
+
+		if(filterParameters.indexOf("@") !== -1){
+			for (let parameter of filterParameters.split(",")) {
+				for (let img of memberAvatars) {
+					if(img.id == parameter) {
+						img.style.borderBottom = "4px solid orange";
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -76,27 +128,4 @@ function getParameterByName(name, url) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-// refresh highlight/values based on url 
-
-function refreshHighlight(){
-
-	let filterParameters = getParameterByName("filter");
-
-	if(filterParameters !== null && filterParameters.indexOf("label") !== -1) {
-		let string = filterParameters.indexOf(",") !== -1 ? filterParameters.split(",")[0] : filterParameters;
-		selectFilter.value = string.replace("label:","");
-	}
-
-
-	if(filterParameters !== null && filterParameters.indexOf("@") !== -1){
-		for (let parameter of filterParameters.split(",")) {
-			for (let img of memberAvatars) {
-				if(img.id == parameter) {
-					img.style.borderBottom = "4px solid orange";
-				}
-			}
-		}
-	}
 }

@@ -13,9 +13,8 @@
 	},
 	"content_scripts": [
 	{
-		"matches": [
-			"https://trello.com/b/TrCSPljX/pm-aurora*",
-			"http://trello.com/b/TrCSPljX/pm-aurora*"
+		"matches": [,
+			"https://trello.com/b/sr2sLog8/gestione-giornaliera*"
 		],
 		"js": ["/filter/filterSetup.js"]
 

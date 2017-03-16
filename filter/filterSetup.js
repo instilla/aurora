@@ -1,4 +1,4 @@
-// content.js to setup filterUI and injext the filtering logic into html.
+// content.js to setup filterUI and inject the filtering logic into html.
 
 
 
@@ -23,6 +23,16 @@ chrome.runtime.sendMessage(
 		});
 	}
 );
+
+// listen to update from popup
+chrome.runtime.onMessage.addListener(
+	function(request, sender, sendResponse) {
+
+		if (request.command == "updateAvatar"){
+			let random = extractMembers();
+			window.location.href = window.location.href;
+		}
+ });
 
 function createFilterUI(labelList,avatarArray){
 
@@ -79,7 +89,7 @@ function createFilterUI(labelList,avatarArray){
 
 	for (let avatarImg of avatarDiv.childNodes) {
 		avatarImg.style.marginRight = "3px";
-		avatarImg.style.borderBottom = "2px solid #0067a3"
+		// avatarImg.style.borderBottom = "2px solid #0067a3"
 		string = avatarImg.title;
 		string = string.split("(");
 		string = string[1].replace(")","");
@@ -130,14 +140,15 @@ function extractMembers(){
 	nodeList = document.querySelectorAll("img.member-avatar");
 	for ( let node of nodeList) memberArray.push(node.outerHTML);
 	memberArray = [... new Set(memberArray)];
-	chrome.runtime.sendMessage(
-		{
-			command : "saveMembers", 
-			array : memberArray
-		}, function () {
-			//update members
-		}
-	);
+	chrome.storage.local.set({'memberAvatars' : memberArray});
+	// chrome.runtime.sendMessage(
+	// 	{
+	// 		command : "saveMembers", 
+	// 		array : memberArray
+	// 	}, function () {
+	// 		//update members
+	// 	}
+	// );
 	return memberArray;
 
 
