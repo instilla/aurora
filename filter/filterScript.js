@@ -2,10 +2,10 @@
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
-
+setTimeout(putOnMask(),3000);
 // refresh-Logic
 
-putOnMask();
+
 
 function hrefHandler(){
     this.oldHref = window.location.href;
@@ -55,65 +55,50 @@ document.onload = selectFilter.addEventListener('change',(event)=>{
 
 });
 
-// avatar
-
-for (let img of memberAvatars) {
-	 img.addEventListener('click',(event) => {clickAvatar(event)});
-}
-
-
-function clickAvatar(event) {
-	let string ="";
-	let parameters = getParameterByName("filter");
-
-
-		// with selected event
-		if (parameters !== null) {
-			if (parameters.indexOf(event.target.id) !== -1) {
-				string = (parameters.split(",").length < 0) ? "" : window.location.search.replace(event.target.id,"");
-
-			} else {
-			string= window.location.search + "," + event.target.id;
-			}
-		} else {
-			string= "?filter=" + event.target.id;
-		}
-
-	 window.location.href = window.location.href.split("?")[0] + string;
-}
-
-
-
 // mask logic
 
 function putOnMask(){
 
+	
+
 	let filterParameters = getParameterByName("filter");
 
-	if (filterParameters == null) {
-		selectFilter.value = "All projects";
-		for (let img of memberAvatars) {
-			img.style.borderBottom = "2px solid #0067a3";
-		}
-
-
-	} else {
-
-		if(filterParameters.indexOf("label") !== -1) {
+	if(filterParameters !== null) {
+		if (filterParameters.indexOf("label") !== -1) {
 			let string = filterParameters.indexOf(",") !== -1 ? filterParameters.split(",")[0] : filterParameters;
 			selectFilter.value = string.replace("label:","");
 		}
+	}
 
-		if(filterParameters.indexOf("@") !== -1){
-			for (let parameter of filterParameters.split(",")) {
-				for (let img of memberAvatars) {
-					if(img.id == parameter) {
-						img.style.borderBottom = "4px solid orange";
-					}
+	if (selectFilter.value !== "All projects") {
+		for (let img of memberAvatars) {
+			img.style.opacity = "0.4";
+		}
+		cardsSpan = document.querySelectorAll("div.list-card-details span[title='" + selectFilter.value + "']");
+		// console.log(cardsSpan[0].parentElement.parentElement);
+		cardsMember = [];
+		for (let span of cardsSpan) {
+			cardsMember.push(span.parentElement.parentElement.querySelector("img.member-avatar").title);
+		}
+		cardsMember = [... new Set(cardsMember)]
+		
+		for (img of memberAvatars) {
+			for (let string of cardsMember) {
+				if (string == img.title) {
+					img.style.opacity = "1";
 				}
 			}
 		}
+ 
+	} else {
+		for (let img of memberAvatars) {
+			img.style.opacity = "1";
+		}
 	}
+
+
+
+
 }
 
 

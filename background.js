@@ -33,15 +33,6 @@ chrome.runtime.onMessage.addListener(function(request,sender, sendResponse) {
     		});
     	return true;
     }
-
-    // on update message update json
-
-    // if (request.command == 'saveMembers') {
-    //     console.log("save attivo");
-    //     console.log(request.array);
-    //     chrome.storage.local.set({'memberAvatars' : request.array});
-    // }
-
 });
 
 

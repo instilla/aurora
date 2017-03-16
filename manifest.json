@@ -13,7 +13,7 @@
 	},
 	"content_scripts": [
 	{
-		"matches": [,
+		"matches": [
 			"https://trello.com/b/sr2sLog8/gestione-giornaliera*"
 		],
 		"js": ["/filter/filterSetup.js"]

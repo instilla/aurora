@@ -4,8 +4,8 @@ document.querySelector("button#settings").addEventListener('click', () => {
 });
 
 document.querySelector("button#update").addEventListener('click', () => {
-	
-	chrome.tabs.query({url: trelloPage}, function(results) {
+
+	chrome.tabs.query({url: trelloPage + "*"}, function(results) {
 	     if (results.length == 0) {
 	        chrome.tabs.create({url: trelloPage})
 	     } else {
