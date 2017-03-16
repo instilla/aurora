@@ -72,7 +72,7 @@ function putOnMask(){
 
 	if (selectFilter.value !== "All projects") {
 		for (let img of memberAvatars) {
-			img.style.opacity = "0.4";
+			img.style.opacity = "0.2";
 		}
 		cardsSpan = document.querySelectorAll("div.list-card-details span[title='" + selectFilter.value + "']");
 		cardsMember = [];
@@ -89,13 +89,15 @@ function putOnMask(){
 			for (let string of cardsMember) {
 				if (string == img.title) {
 					img.style.opacity = "1";
+					img.style.borderBottom ="4px solid orange";
+					img.style.borderTop ="2px solid orange"
 				}
 			}
 		}
  
 	} else {
 		for (let img of memberAvatars) {
-			img.style.opacity = "0.4";
+			img.style.opacity = "0.2";
 		}
 	}
 

@@ -90,7 +90,7 @@ function createFilterUI(labelList,avatarArray){
 	for (let avatarImg of avatarDiv.childNodes) {
 		avatarImg.style.marginRight = "3px";
 		avatarImg.style.borderBottom = "2px solid #0067a3";
-		avatarImg.style.opacity = "0.4";
+		avatarImg.style.opacity = "0.2";
 		// avatarImg.style.borderBottom = "2px solid #0067a3"
 		string = avatarImg.title;
 		string = string.split("(");
