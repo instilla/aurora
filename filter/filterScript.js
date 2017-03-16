@@ -68,6 +68,8 @@ function putOnMask(){
 			let string = filterParameters.indexOf(",") !== -1 ? filterParameters.split(",")[0] : filterParameters;
 			selectFilter.value = string.replace("label:","");
 		}
+	} else {
+		selectFilter.value = "All projects";
 	}
 
 	if (selectFilter.value !== "All projects") {
@@ -92,7 +94,7 @@ function putOnMask(){
  
 	} else {
 		for (let img of memberAvatars) {
-			img.style.opacity = "1";
+			img.style.opacity = "0.4";
 		}
 	}
 
