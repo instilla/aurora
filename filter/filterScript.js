@@ -2,7 +2,7 @@
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
-window.onload = setTimeout(()=>{putOnMask()},2000);
+window.onload = setTimeout(()=>{putOnMask()},5000);
 // refresh-Logic
 
 
