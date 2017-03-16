@@ -2,7 +2,7 @@
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
-setTimeout(putOnMask(),3000);
+window.onload = setTimeout(()=>{putOnMask()},2000);
 // refresh-Logic
 
 
@@ -59,8 +59,6 @@ document.onload = selectFilter.addEventListener('change',(event)=>{
 
 function putOnMask(){
 
-	
-
 	let filterParameters = getParameterByName("filter");
 
 	if(filterParameters !== null) {
@@ -77,12 +75,15 @@ function putOnMask(){
 			img.style.opacity = "0.4";
 		}
 		cardsSpan = document.querySelectorAll("div.list-card-details span[title='" + selectFilter.value + "']");
-		// console.log(cardsSpan[0].parentElement.parentElement);
 		cardsMember = [];
 		for (let span of cardsSpan) {
-			cardsMember.push(span.parentElement.parentElement.querySelector("img.member-avatar").title);
+			if (span.parentElement.parentElement.querySelector("img.member-avatar")!== null ){
+				cardsMember.push(span.parentElement.parentElement.querySelector("img.member-avatar").title);
+			}
 		}
-		cardsMember = [... new Set(cardsMember)]
+		cardsMember = [... new Set(cardsMember)];
+		// console.log(cardsMember);
+
 		
 		for (img of memberAvatars) {
 			for (let string of cardsMember) {
@@ -97,9 +98,6 @@ function putOnMask(){
 			img.style.opacity = "0.4";
 		}
 	}
-
-
-
 
 }
 
