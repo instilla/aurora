@@ -2,23 +2,37 @@
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
-window.onload = setTimeout(()=>{putOnMask()},5000);
-// refresh-Logic
 
-
+//refresh logic;
 
 function hrefHandler(){
     this.oldHref = window.location.href;
     this.Check;
+    this.repo;
 
     var that = this;
     var detect = function(){
-        if(that.oldHref!=window.location.href){
-            putOnMask();
-            that.oldHref = window.location.href;
-        }
+        // if(that.oldHref!=window.location.href){
+            
+        	if (window.location.href.indexOf("/c/") == -1) {
+
+        		if ( that.oldHref.indexOf("/c/") !== -1) {
+
+        			string = that.repo.split("/");
+        			window.history.pushState({"html":" ","pageTitle":" "},"", string[string.length-1]);
+
+        		} 
+        		putOnMask();	        	
+	        } else {
+	        	if (that.oldHref.indexOf("/c/") == -1) {
+        			that.repo = that.oldHref;
+        		}
+        	}
+
+	        that.oldHref = window.location.href;
+        // }
     };
-    this.Check = setInterval(function(){ detect() }, 100);
+    this.Check = setInterval(function(){ detect() }, 250);
 }
 
 let hrefDetection = new hrefHandler();
@@ -82,8 +96,6 @@ function putOnMask(){
 			}
 		}
 		cardsMember = [... new Set(cardsMember)];
-		// console.log(cardsMember);
-
 		
 		for (img of memberAvatars) {
 			for (let string of cardsMember) {
