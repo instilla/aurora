@@ -78,7 +78,11 @@ function putOnMask(){
 	if(filterParameters !== null) {
 		if (filterParameters.indexOf("label") !== -1) {
 			let string = filterParameters.indexOf(",") !== -1 ? filterParameters.split(",")[0] : filterParameters;
-			selectFilter.value = string.replace("label:","");
+			if (selectFilter.value !== string.replace("label:","")){
+				selectFilter.value = string.replace("label:","");
+			} 
+		}	else {
+				selectFilter.value = "All projects";
 		}
 	} else {
 		selectFilter.value = "All projects";
