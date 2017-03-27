@@ -96,7 +96,9 @@ function putOnMask(){
 		cardsMember = [];
 		for (let span of cardsSpan) {
 			if (span.parentElement.parentElement.querySelector("img.member-avatar")!== null ){
-				cardsMember.push(span.parentElement.parentElement.querySelector("img.member-avatar").title);
+				for (let avatarImg of span.parentElement.parentElement.querySelectorAll("img.member-avatar")) {
+					cardsMember.push(avatarImg.title);
+				}
 			}
 		}
 		cardsMember = [... new Set(cardsMember)];
@@ -132,3 +134,6 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+
+

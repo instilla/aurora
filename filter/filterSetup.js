@@ -38,6 +38,14 @@ function createFilterUI(labelList,avatarArray){
 
 	// console.log(avatarArray);
 
+	// create CSS and position it:
+
+	var head  = document.getElementsByTagName('head')[0];
+    var link  = document.createElement('style');
+    link.innerText = 
+    	".card-label.mod-card-front {width:auto; height:8pt; line-height:8pt; padding:2px; text-shadow:none;font-size:8pt;}"
+    ;
+    head.appendChild(link);
 	//create and position the div
 
 	let parentDiv = document.querySelector("#surface");
@@ -57,6 +65,10 @@ function createFilterUI(labelList,avatarArray){
 	option = document.createElement("OPTION");
 	option.value= "All projects";
 	option.innerText="All projects";
+	selectUI.appendChild(option);
+	option = document.createElement("OPTION");
+	option.value= "none";
+	option.innerText="None";
 	selectUI.appendChild(option);
 	for (iii in labelList.answer) {
 
@@ -97,13 +109,17 @@ function createFilterUI(labelList,avatarArray){
 		string = string[1].replace(")","");
 		string = "@" + string;
 		avatarImg.id = string;
-		avatarImg.className = "aurora-avatar"
+		avatarImg.className = "aurora-avatar";
+
+		// creating new popover
 	}
 	avatarDiv.style.display = "inline-block";
 	avatarDiv.style.marginLeft ="160px";
 
 
 	filterDiv.appendChild(avatarDiv);
+
+	//create overing;
 
 }
 
@@ -143,18 +159,51 @@ function extractMembers(){
 	for ( let node of nodeList) memberArray.push(node.outerHTML);
 	memberArray = [... new Set(memberArray)];
 	chrome.storage.local.set({'memberAvatars' : memberArray});
-	// chrome.runtime.sendMessage(
-	// 	{
-	// 		command : "saveMembers", 
-	// 		array : memberArray
-	// 	}, function () {
-	// 		//update members
-	// 	}
-	// );
 	return memberArray;
 
 
 }
+
+// function to stock and create the object for every Member/Labels !!! run it after the upload
+
+function gatherMemberLabels() {
+	let membersLabel = [];
+	let avatarNodes = document.querySelectorAll("img.aurora-avatar");
+	let cardImg;
+	let label;
+	let array = [];
+	let iii=0;
+
+	for (let img of avatarNodes) {
+		array=[];
+		membersLabel.push({title:"",labels:[]});
+		membersLabel[iii].title = img.title;
+		cardImgs = document.querySelectorAll("div.list-card-details img[title='" + img.title +"']");
+
+		for (let cardImg of cardImgs) {
+
+			label = cardImg.parentElement.parentElement.parentElement.querySelector("span.card-label");
+			if (label !== null) {
+				array.push(label.title);
+			}
+
+		}
+		membersLabel[iii].labels = [ ... new Set (array)];
+		iii++;
+	}
+	// console.log(membersLabel);
+	chrome.storage.local.set({'membersLabel' : membersLabel});
+}
+
+//function to create popup based on stock 
+
+function createPopupLabel(membersLabel){
+	let avatarNodes = document.querySelectorAll("img.aurora-avatar");
+}
+
+
+
+//function to stock-create repeat for the first 10 seconds every 1 seconds.
 
 
 console.log("Aurora is On");
