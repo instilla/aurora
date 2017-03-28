@@ -2,6 +2,11 @@
 
 let selectFilter = document.querySelector("#aurora-filter");
 let memberAvatars = document.querySelectorAll("img.aurora-avatar")
+let avatarDiv = document.querySelector("div.avatar-div");
+let titleKeeper = "";
+hoverListener();
+let hrefDetection = new hrefHandler();
+let stopMask = false;
 
 //refresh logic;
 
@@ -14,7 +19,7 @@ function hrefHandler(){
     var detect = function(){
         // if(that.oldHref!=window.location.href){
             
-        	if (window.location.href.indexOf("/c/") == -1) {
+        	if (window.location.href.indexOf("/c/") == -1 && !stopMask) {
 
         		if ( that.oldHref.indexOf("/c/") !== -1) {
 
@@ -35,7 +40,7 @@ function hrefHandler(){
     this.Check = setInterval(function(){ detect() }, 250);
 }
 
-let hrefDetection = new hrefHandler();
+
 
 
 //listener logic
@@ -118,6 +123,31 @@ function putOnMask(){
 			img.style.opacity = "0.2";
 		}
 	}
+
+}
+
+//avatar label menù hover
+
+function hoverListener()  {
+	avatarDiv.addEventListener("mouseover", function(event) {
+		if (event.target.tagName == "IMG") {
+			document.querySelector('div#'+event.target.title.split("(")[1].replace(")","")).style.display = "block";
+			 titleKeeper = event.target.title;
+			 event.target.title = "";
+			 stopMask = true;
+
+
+		}
+	}, false)
+
+	avatarDiv.addEventListener("mouseout", function(event) {
+		if (event.target.tagName == "IMG") {
+			event.target.title = titleKeeper;
+			titleKeeper = "";
+			document.querySelector('div#'+event.target.title.split("(")[1].replace(")","")).style.display = "none";
+			stopMask = false;
+		}
+	}, false)
 
 }
 

@@ -24,6 +24,14 @@ chrome.runtime.sendMessage(
 	}
 );
 
+
+window.onload = setTimeout(gatherMemberLabels,3000);
+
+window.onload = setTimeout(popupSetup, 5000);
+
+window.onload = setTimeout(gatherMemberLabels,10000);
+
+
 // listen to update from popup
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
@@ -46,7 +54,9 @@ function createFilterUI(labelList,avatarArray){
     	".card-label.mod-card-front {width:auto; height:8pt; line-height:8pt; padding:2px; text-shadow:none;font-size:8pt;}"
     ;
     head.appendChild(link);
+
 	//create and position the div
+
 
 	let parentDiv = document.querySelector("#surface");
 	let filterDiv = document.createElement("DIV");
@@ -93,6 +103,7 @@ function createFilterUI(labelList,avatarArray){
 	//create the avatar
 
 	let avatarDiv = document.createElement("DIV");
+	avatarDiv.className = "avatar-div";
 	let string = "";
 	for (let img of avatarArray) {
 		string += img;
@@ -103,7 +114,6 @@ function createFilterUI(labelList,avatarArray){
 		avatarImg.style.marginRight = "3px";
 		avatarImg.style.borderBottom = "2px solid #0067a3";
 		avatarImg.style.opacity = "0.2";
-		// avatarImg.style.borderBottom = "2px solid #0067a3"
 		string = avatarImg.title;
 		string = string.split("(");
 		string = string[1].replace(")","");
@@ -197,13 +207,71 @@ function gatherMemberLabels() {
 
 //function to create popup based on stock 
 
+
 function createPopupLabel(membersLabel){
 	let avatarNodes = document.querySelectorAll("img.aurora-avatar");
+	let divPopOver;
+	let leftSpace = 165;
+	let liLabel;
+	let spanHead;
+	
+	
+
+	for (avatar of avatarNodes) {
+		
+		// console.log(avatar.title);
+		
+		for (object of membersLabel) {
+			// console.log(object);
+			if (avatar.title == object.title) {
+			divPopOver = document.createElement("DIV");
+			divPopOver.className = "pop-over pop-over-list";
+			spanHead = document.createElement("DIV");
+			spanHead.className = ".pop-over-header-title";
+			spanHead.innerText = avatar.title.split("(")[0];
+			spanHead.style.fontWeight = "450";
+			spanHead.style.borderBottom = "2px solid #f2f2f2";
+			spanHead.style.textAlign = "center";
+			spanHead.width = "100%";
+			divPopOver.appendChild(spanHead);
+				for (label of object.labels) {
+					liLabel = document.createElement("LI");
+					liLabel.innerText = label;
+					divPopOver.appendChild(liLabel);
+					// console.log(avatar.title);
+				}
+			divPopOver.id = object.title.split("(")[1].replace(")","");
+			divPopOver.style.position = "absolute";
+			divPopOver.style.top = "77px";
+			divPopOver.style.left = leftSpace + "px";
+			divPopOver.style.width = "150px";
+			divPopOver.style.padding = "3px";
+			document.body.appendChild(divPopOver);
+			leftSpace +=33;
+			divPopOver.style.display = "none";
+
+			}
+
+		}
+	}
+	// console.log("ok1");
+
 }
+
+
+
 
 
 
 //function to stock-create repeat for the first 10 seconds every 1 seconds.
 
 
-console.log("Aurora is On");
+function popupSetup() {
+	chrome.storage.local.get("membersLabel", function(data) {
+		// console.log(data.membersLabel);
+		createPopupLabel(data.membersLabel);
+		console.log("Aurora is on");
+		
+	})
+}
+
