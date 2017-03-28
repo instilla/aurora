@@ -2,7 +2,7 @@
 
 
 
-// retrieve list data from backgrounbd and update DOM
+// retrieve list data from background and update DOM
 
 chrome.runtime.sendMessage( 
 	{command:'giveMeLabels'},
@@ -52,6 +52,7 @@ function createFilterUI(labelList,avatarArray){
     var link  = document.createElement('style');
     link.innerText = 
     	".card-label.mod-card-front {width:auto; height:8pt; line-height:8pt; padding:2px; text-shadow:none;font-size:8pt;}"
+    	+".cardCounter {background-color:#448fbb}"
     ;
     head.appendChild(link);
 
